@@ -4,6 +4,8 @@
     <p align="center">See SSL certs as they're issued live.</p>
 </p>
 
+fork自[github.com/CaliDog/certstream-go](github.com/CaliDog/certstream-go)，添加url参数，使支持连接自部署服务。
+
 **Certstream-go** is a library for interacting with the [certstream network](https://certstream.calidog.io/) to monitor an aggregated feed from a collection of [Certificate Transparency Logs](https://www.certificate-transparency.org/known-logs).
 
 It leverages the excellent [websocket](https://github.com/gorilla/websocket) and [jsonq](https://github.com/jmoiron/jsonq) libraries and supports reconnecting automatically. 
@@ -11,7 +13,7 @@ It leverages the excellent [websocket](https://github.com/gorilla/websocket) and
 # Installing
 
 ```
-go get github.com/CaliDog/certstream-go
+go get github.com/WangsYi/certstream-go
 ```
 
 # Usage
@@ -22,7 +24,7 @@ go get github.com/CaliDog/certstream-go
 package main
 
 import (
-	"github.com/CaliDog/certstream-go"
+	"github.com/WangsYi/certstream-go"
 	logging "github.com/op/go-logging"
 )
 
@@ -30,7 +32,7 @@ var log = logging.MustGetLogger("example")
 
 func main() {
 	// The false flag specifies that we want heartbeat messages.
-	stream, errStream := certstream.CertStreamEventStream(false)
+	stream, errStream := certstream.CertStreamEventStream(false, "wss://127.0.0.1:5000/full_stream")
 	for {
 		select {
 			case jq := <-stream:
